@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -41,16 +42,24 @@ public class LonelyTwitterActivity extends Activity {
 		bodyText = (EditText) findViewById(R.id.body);
 		Button saveButton = (Button) findViewById(R.id.save);
 		oldTweetsList = (ListView) findViewById(R.id.oldTweetsList);
-
+		Button clearButton = (Button) findViewById(R.id.clear);
 		saveButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				String text = bodyText.getText().toString();
-				ImportantTweet newTweet=new ImportantTweet();
+				ImportantTweet newTweet=new ImportantTweet(text);
 				tweets.add(newTweet);
 				adapter.notifyDataSetChanged();
 				saveInFile();
 
+			}
+		});
+		clearButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				tweets.clear();
+				adapter.notifyDataSetChanged();
+				saveInFile();	
 			}
 		});
 	}
@@ -65,21 +74,26 @@ public class LonelyTwitterActivity extends Activity {
 	}
 
 	private void loadFromFile() {
-		ArrayList<String> tweets = new ArrayList<String>();
+		Log.d("joey","start loading");
 		try {
 			FileInputStream fis = openFileInput(FILENAME);
 			InputStreamReader isr= new InputStreamReader(fis);
 			BufferedReader reader = new BufferedReader(isr);
 			Gson gson=new Gson();
 			Type typeListTweets=new TypeToken<ArrayList<ImportantTweet>>(){}.getType();
-			gson.fromJson(reader,typeListTweets);
+			Log.d("joey","creatd Type");
+			tweets = gson.fromJson(reader,typeListTweets);
+			Log.d("joey","Type fail");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
+			Log.d("joey","File not found");
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			Log.d("joey","File not found");
 			e.printStackTrace();
 		}
+		Log.d("joey","done loading");
 	}
 	
 	private void saveInFile() {

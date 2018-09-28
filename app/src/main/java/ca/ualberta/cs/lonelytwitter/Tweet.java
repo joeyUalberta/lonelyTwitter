@@ -9,14 +9,14 @@ public abstract class Tweet implements Tweetable {
     private static final Integer MAX_CHARS = 140;
 
     //Empty argument constructor with default values
-    Tweet() {
+    public Tweet() {
         //Must use the 'this' keyword in order to specify the current object message = message does nothing!
         this.date = new Date();
         this.message = "I am default message schwa!";
     }
 
     //Overloading: so that we can specify the tweet content
-    Tweet(String message) {
+    public Tweet(String message) {
         this.date = new Date();
         this.message = message;
     }
