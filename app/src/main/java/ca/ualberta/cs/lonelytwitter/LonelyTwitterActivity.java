@@ -64,6 +64,9 @@ public class LonelyTwitterActivity extends Activity {
 		});
 	}
 
+	/**
+	 * Connect the arrayadapter to the listview, and load the file
+	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -73,6 +76,9 @@ public class LonelyTwitterActivity extends Activity {
 		oldTweetsList.setAdapter(adapter);
 	}
 
+	/**
+	 * Load the tweets from the file
+	 */
 	private void loadFromFile() {
 		Log.d("joey","start loading");
 		try {
@@ -95,7 +101,10 @@ public class LonelyTwitterActivity extends Activity {
 		}
 		Log.d("joey","done loading");
 	}
-	
+
+	/**
+	 * store the new tweets to the file
+	 */
 	private void saveInFile() {
 		try {
 			FileOutputStream fos= openFileOutput(FILENAME,0);

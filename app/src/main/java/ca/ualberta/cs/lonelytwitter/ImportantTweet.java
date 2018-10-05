@@ -3,6 +3,9 @@ package ca.ualberta.cs.lonelytwitter;
 
 import java.util.Date;
 
+/**
+ * An important tweet
+ */
 public class ImportantTweet extends Tweet {
 
     //Empty argument constructor with default values
@@ -15,6 +18,10 @@ public class ImportantTweet extends Tweet {
         super(message);
     }
 
+    /**
+     * Indicate this is important
+     * @return
+     */
     @Override
     public Boolean isImportant() {
         return true;

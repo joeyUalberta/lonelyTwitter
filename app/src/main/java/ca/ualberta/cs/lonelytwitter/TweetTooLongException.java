@@ -1,5 +1,8 @@
 package ca.ualberta.cs.lonelytwitter;
 
+/**
+ * An exception that indicate the message passed is way too long
+ */
 public class TweetTooLongException extends Exception {
 
     TweetTooLongException() {
