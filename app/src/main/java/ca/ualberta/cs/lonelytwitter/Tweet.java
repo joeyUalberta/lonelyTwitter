@@ -2,46 +2,53 @@ package ca.ualberta.cs.lonelytwitter;
 
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 public abstract class Tweet implements Tweetable {
-
-    private Date date;
     private String message;
-    private static final Integer MAX_CHARS = 140;
+    private Date date;
 
-    //Empty argument constructor with default values
-    public Tweet() {
-        //Must use the 'this' keyword in order to specify the current object message = message does nothing!
+    @JestId
+    private String tweetID;
+    public Tweet(String message){
+        this.message = message;
         this.date = new Date();
-        this.message = "I am default message schwa!";
     }
 
-    //Overloading: so that we can specify the tweet content
-    public Tweet(String message) {
-        this.date = new Date();
+    public Tweet(String message, Date date){
+        this.message = message;
+        this.date = date;
+    }
+
+    @Override
+    public String toString(){
+        return message;
+    }
+
+    public abstract Boolean isImportant();
+
+
+    public void setMessage(String message) throws TweetTooLongException {
+        if (message.length() > 140){
+            //Do Something!
+            throw new TweetTooLongException();
+        }
         this.message = message;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public String getMessage() {
-        return this.message;
+        return message;
     }
 
-    /**
-     * This will set the message if it wasnt too long
-     * @param message
-     * @throws TweetTooLongException throw error if the message is too long
-     */
-    public void setMessage(String message) throws TweetTooLongException {
-        if (message.length() <= this.MAX_CHARS ) {
-            this.message = message;
-        } else {
-            throw new TweetTooLongException();
-        }
+    public Date getDate() {
+        return date;
     }
 
-    public Date getDate() { return this.date; }
-    public String toString(){
-        return this.message;
+    public void setTweetId(String tweetID){
+        this.tweetID=tweetID;
     }
-    //No method body implemented! We leave that up to the subclasses (they MUST implement it)
-    public abstract Boolean isImportant();
 }
