@@ -34,6 +34,7 @@ public class LonelyTwitterActivity extends Activity {
 	private ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
 	private ArrayAdapter<Tweet> adapter;
 
+	public static final String SEND_MSG = "ca.ualberta.cs.lonelytwitter.MSG";
 
 
 	@Override
@@ -56,6 +57,7 @@ public class LonelyTwitterActivity extends Activity {
 				adapter.notifyDataSetChanged();
 				new ElasticsearchTweetController.AddTweetsTask().execute(newTweet);
 				 // TODO replace this with elastic search
+				sendMessage();
 			}
 		});
 
@@ -97,5 +99,13 @@ public class LonelyTwitterActivity extends Activity {
 		adapter = new ArrayAdapter<Tweet>(this,
 				R.layout.list_item, tweetList);
 		oldTweetsList.setAdapter(adapter);
+	}
+
+	public void sendMessage(){
+		Intent intent = new Intent(this,EditTweetActivity.class);
+		EditText et=(EditText) findViewById(R.id.body);
+		String message =et.getText().toString();
+		intent.putExtra(SEND_MSG,message);
+		startActivity(intent);
 	}
 }
