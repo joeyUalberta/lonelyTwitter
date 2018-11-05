@@ -101,7 +101,7 @@ public class LonelyTwitterActivity extends Activity {
 		oldTweetsList.setAdapter(adapter);
 	}
 
-	public void sendMessage(){
+	private void sendMessage(){
 		Intent intent = new Intent(this,EditTweetActivity.class);
 		EditText et=(EditText) findViewById(R.id.body);
 		String message =et.getText().toString();

@@ -47,7 +47,4 @@ public class LonelyTwitterActivityTest extends ActivityInstrumentationTestCase2<
         String s = temp.getText().toString();
         assertEquals(s,"new thing");
     }
-
-
-
 }

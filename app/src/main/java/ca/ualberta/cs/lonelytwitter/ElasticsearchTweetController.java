@@ -2,22 +2,20 @@ package ca.ualberta.cs.lonelytwitter;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
-import io.searchbox.core.SearchResult;
 
 /**
  * Created by romansky on 10/20/16.
@@ -29,8 +27,6 @@ public class ElasticsearchTweetController {
     //private static JestDroidClient client;
 
 
-    public static void addTweets(Tweet tweet){
-    }
     public static class AddTweetsTask extends AsyncTask<Tweet,Void,Void>{
 
         protected Void doInBackground(Tweet... tweets) {
@@ -73,6 +69,7 @@ public class ElasticsearchTweetController {
         }
 
     }
+    /*
     public static class SearchTweetsTask extends AsyncTask<String,Void,ArrayList<Tweet>>{
 
         protected ArrayList<Tweet> doInBackground(String ... params) {
@@ -104,7 +101,43 @@ public class ElasticsearchTweetController {
             return tweets;
         }
 
+    }*/
+
+
+    public static class SearchTweetsTask extends AsyncTask<String,Void,ArrayList<Tweet>>{
+
+        protected ArrayList<Tweet> doInBackground(String ... params) {
+
+            setClient();
+            ArrayList<Tweet> tweets= new ArrayList<Tweet>();
+            String query = "{\n" +
+                    "    \"query\": {\n" +
+                    "        \"match\" :{ \"message\" : \""+params[0]+"\"}\n"+
+                    "    }\n" +
+                    "}";
+            Log.d("joey",query);
+            Search search = new Search.Builder(query).addIndex("wong1")
+                    .addType("tweet").build();
+            try{
+                JestResult result = client.execute(search);
+                if(result.isSucceeded()){
+                    List<NormalTweet> tweetList;
+                    tweetList=result.getSourceAsObjectList(NormalTweet.class);
+                    for (Tweet tweet:tweetList){
+                            tweets.add(tweet);
+                    }
+                }else{
+                    Log.d("joey","search by keyword not working");
+                }
+            }catch(IOException e){
+                Log.d("Joey Error",e.getMessage());
+            }
+            Log.d("joe",String.valueOf(tweets.size()));
+            return tweets;
+        }
+
     }
+
     public static void setClient(){
         if(client==null){
             DroidClientConfig config = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080/").build();

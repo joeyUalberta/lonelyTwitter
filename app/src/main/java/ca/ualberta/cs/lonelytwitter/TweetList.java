@@ -2,7 +2,7 @@ package ca.ualberta.cs.lonelytwitter;
 
 import java.util.ArrayList;
 
-public class TweetList {
+class TweetList {
     private ArrayList<Tweet> tweets = new ArrayList<Tweet>();
 
     public void addTweet(Tweet t){
